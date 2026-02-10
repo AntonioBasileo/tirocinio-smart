@@ -21,14 +21,30 @@ TirocinioSmart è una piattaforma web per la gestione digitale dei tirocini univ
   - `secrets/` per le chiavi JWT e password DB (non versionare in produzione!).
 
 ## Come avviare l'applicazione
-1. **Configurazione ambiente**
-   - Installa Docker Desktop.
-   - Scaricare il progetto kube-config disponibile nella repo kube-config.
-   - Abilitare kubernetes su docker desktop.
-   - Importare i file che si trovano nelle cartelle tirocinio-smart (deployment, ingress, secrets) in Kubernetes tramte il comando kubectl apply -f <nome_file>.
-   - A questo punto l'applicazione sarà accessibile.
 
-2**Accesso API**
+### 1. Configurazione locale e Kubernetes
+   - Installa Docker Desktop.
+   - Scarica il progetto `kube-config` disponibile nella relativa repository.
+   - Abilita Kubernetes su Docker Desktop.
+
+### 2. Pipeline GitLab CI/CD
+Il progetto utilizza GitLab CI/CD per automatizzare il build e il deploy:
+
+**Workflow:**
+- **Merge Request verso `main`**: La pipeline si avvia automaticamente per validare il codice.
+- **Push su `main`**: La pipeline esegue build e deploy automatici (se non ci sono merge request aperte).
+- **Pipeline stages**:
+  - **Build** 🔨: Costruisce l'immagine Docker e la pusha su Docker Hub (`antoniobasileo/tirocinio-smart:latest`).
+  - **Deploy** 🏗️: Esegue il deploy su Kubernetes utilizzando gli script presenti in `kube-config`.
+
+**Runner configurato:**
+- Tag: `tirocinio-smart`
+- Il runner esegue i job in locale sulla macchina specificata.
+- Assicurati che il runner sia registrato e online su GitLab (Settings → CI/CD → Runners).
+
+**File di configurazione:** `.gitlab-ci.yml`
+
+### 3. Accesso API
    - Le API sono esposte su `http://localhost:8000/tirocinio-smart/`
    - Esempi endpoint:
      - Autenticazione: `/auth/login`, `/auth/register-user`, `/auth/register-admin-user`
