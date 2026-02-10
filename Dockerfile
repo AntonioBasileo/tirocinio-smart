@@ -17,7 +17,6 @@ COPY app ./app
 COPY security ./security
 COPY tirociniosmart ./tirociniosmart
 COPY manage.py ./manage.py
-COPY templates ./templates
 COPY scripts/entrypoint.sh ./entrypoint.sh
 COPY requirements.txt ./requirements.txt
 COPY scripts ./scripts
