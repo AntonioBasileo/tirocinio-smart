@@ -10,9 +10,9 @@ workflow:
     - if: '$CI_COMMIT_BRANCH == "main"'
 
 build:
+  stage: build
   tags:
     - tirocinio-smart
-  stage: build
   script:
     - echo "---🔨Build immagine Docker ---"
     - docker build -t tirocinio-smart:latest .
@@ -21,9 +21,9 @@ build:
     - echo "---✅ Immagine docker pushata su Docker Hub (antoniobasileo/tirocinio-smart:latest) ---"
 
 deploy:
+  stage: deploy
   tags:
     - tirocinio-smart
-  stage: deploy
   script:
     - echo "-- 🏗️️ Deploy su Kubernetes ---"
     - cd /Users/antoniobasileo/progetti/kube-config
