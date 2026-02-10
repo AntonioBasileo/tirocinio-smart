@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-cd /tirociniosmart
+cd /tirocinio-smart
 
 DB_HOST="${DB_HOST:-}"
 DB_PORT="${DB_PORT:-}"

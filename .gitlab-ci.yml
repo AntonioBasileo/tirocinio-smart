@@ -1,0 +1,32 @@
+stages:
+  - build
+  - deploy
+
+workflow:
+  rules:
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event" && $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"'
+    - if: '$CI_COMMIT_BRANCH == "main" && $CI_OPEN_MERGE_REQUESTS'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == "main"'
+
+build:
+  tags:
+    - tirocinio-smart
+  stage: build
+  script:
+    - echo "---🔨Build immagine Docker ---"
+    - docker build -t tirocinio-smart:latest .
+    - docker tag tirocinio-smart:latest antoniobasileo/tirocinio-smart:latest
+    - docker push antoniobasileo/tirocinio-smart:latest
+    - echo "---✅ Immagine docker pushata su Docker Hub (antoniobasileo/tirocinio-smart:latest) ---"
+
+deploy:
+  tags:
+    - tirocinio-smart
+  stage: deploy
+  script:
+    - echo "-- 🏗️️ Deploy su Kubernetes ---"
+    - cd /Users/antoniobasileo/progetti/kube-config
+    - ./scripts/clean.sh tirocinio-smart
+    - ./scripts/apply.sh tirocinio-smart general
+    - echo "---✅ Deploy completato su Kubernetes ---"
