@@ -13,13 +13,7 @@ COPY requirements.txt ./
 # Utente non-root
 RUN addgroup --system tirociniosmart && adduser --system --ingroup tirociniosmart tirociniosmart-user
 
-COPY app ./app
-COPY security ./security
-COPY tirociniosmart ./tirociniosmart
-COPY manage.py ./manage.py
-COPY scripts/entrypoint.sh ./entrypoint.sh
-COPY requirements.txt ./requirements.txt
-COPY scripts ./scripts
+COPY . .
 
 # Dipendenze Python (prima del codice per sfruttare cache Docker)
 RUN pip install --no-cache-dir --upgrade pip \
